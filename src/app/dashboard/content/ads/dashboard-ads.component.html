@@ -1,4 +1,4 @@
-<button mat-stroked-button class="add-btn">Add new</button>
+<button mat-stroked-button class="add-btn" (click)="onAdd()">Add new</button>
 <mat-list>
     <mat-list-item *ngFor="let item of list">
         <button mat-raised-button color="warn">
