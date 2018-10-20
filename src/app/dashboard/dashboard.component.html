@@ -1,0 +1,10 @@
+<mat-sidenav-container class="full-height">
+    <mat-sidenav opened mode="side">
+        <mat-list>
+            <mat-list-item [ngClass]="{'selected': selectedIndex == 0}" (click)="onMenu(0)" routerLink="/dashboard/subscription"> Subscription </mat-list-item>
+            <mat-list-item [ngClass]="{'selected': selectedIndex == 1}" (click)="onMenu(1)" routerLink="/dashboard/statistics"> Statistics </mat-list-item>
+            <mat-list-item [ngClass]="{'selected': selectedIndex == 2}" (click)="onMenu(2)" routerLink="/dashboard/ads"> Advertisements </mat-list-item>
+           </mat-list>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>

@@ -1,0 +1,16 @@
+h1 {
+    color: blue;
+}
+
+/* .example-container {
+    height: 600px;
+} */
+
+.mat-list-item {
+    cursor: pointer;
+    outline: none
+}
+
+.selected {
+    background-color: lightgray;
+}
