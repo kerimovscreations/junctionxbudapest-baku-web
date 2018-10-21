@@ -1,4 +1,4 @@
 export interface Advertisement {
-    title: String
+    name: String
     url: String
 }

@@ -1,8 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import { Statistics } from './interfaces/statistics.interface';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Statistics } from './interfaces/statistics.interface'
 import { User } from './interfaces/user.interface';
-import {SubscriptionDialog} from '../subscription/dashboard-subscription.component';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { AngularFirestore, DocumentChangeAction } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface DialogData {
   user_name: string;
@@ -15,34 +17,31 @@ export interface DialogData {
   styleUrls: ["./dashboard-statistics.component.css"]
 })
 export class DashboardStatisticsComponent implements OnInit {
-  constructor(public dialog: MatDialog) { }
+  list: Observable<any[]>;
 
-  list = [
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 13 , users: [{"name": "John Doe", "phone": "2312312"},
-        {"name": "John Doe", "phone": "2312312"},
-        {"name": "John Doe", "phone": "2312312"},
-        {"name": "John Doe", "phone": "2312312"},
-        {"name": "John Doe", "phone": "2312312"},
-        {"name": "John Doe", "phone": "2312312"},
-        {"name": "John Doe", "phone": "2312312"}]},
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 10 , users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 1000, users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 6500, users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 14 , users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 100, users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 100, users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 100, users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 100, users: [{"name": "John Doe", "phone": "2312312"}] },
-    { "ads": {"title": "AD1", "url": "https://example.com/video"}, count: 100, users: [{"name": "John Doe", "phone": "2312312"}] },
-  ]
+  constructor(public dialog: MatDialog,
+    private db: AngularFirestore) {
+    this.list = db.collection<Statistics>('logs').snapshotChanges()
+      .pipe(
+        map((actions: DocumentChangeAction<Statistics>[]) => {
+          return actions.map((a: DocumentChangeAction<Statistics>) => {
+            const data: Object = a.payload.doc.data() as Statistics;
+            const id = a.payload.doc.id;
+            return { id: id, ...data };
+          });
+        }),
+      );
+      console.log(this.list)
+  }
+
 
   ngOnInit() {
   }
 
-  onUsers(index) {
+  onUsers(item) {
     const dialogRef = this.dialog.open(StatisticsDialog, {
       width: '550px',
-      data: this.list[index].users
+      data: item.users
     });
 
     dialogRef.afterClosed().subscribe(result => {

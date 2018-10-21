@@ -5,7 +5,7 @@ import { DialogData } from '../ads/dashboard-ads.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AngularFirestore, DocumentChangeAction } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 export interface DialogData {
   phone: string;
@@ -23,16 +23,15 @@ export class DashboardSubscriptionComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private db: AngularFirestore) {
     this.list = db.collection<Subscription>('subscriptions').snapshotChanges()
-    .pipe(
-      map((actions: DocumentChangeAction<Subscription>[]) => {
-        return actions.map((a: DocumentChangeAction<Subscription>) => {
-          const data: Object = a.payload.doc.data() as Subscription;
-          const id = a.payload.doc.id;
-          return { id: id, ...data };
-        });
-      }),
-    );
-    console.log(this.list)
+      .pipe(
+        map((actions: DocumentChangeAction<Subscription>[]) => {
+          return actions.map((a: DocumentChangeAction<Subscription>) => {
+            const data: Object = a.payload.doc.data() as Subscription;
+            const id = a.payload.doc.id;
+            return { id: id, ...data };
+          });
+        }),
+      );
   }
 
   ngOnInit() {
@@ -41,7 +40,7 @@ export class DashboardSubscriptionComponent implements OnInit {
   onAdd() {
     const dialogRef = this.dialog.open(SubscriptionDialog, {
       width: '550px',
-      data: { number: "", event: Event.Answer }
+      data: { number: "", event: ""}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -70,20 +69,23 @@ export class DashboardSubscriptionComponent implements OnInit {
   templateUrl: './dialog/subscription-form-dialog.html',
 })
 export class SubscriptionDialog {
+  optionList: Observable<any[]>;
 
   constructor(
     public dialogRef: MatDialogRef<SubscriptionDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private db: AngularFirestore) {
+    this.optionList = db.collection<Event>('events').snapshotChanges()
+      .pipe(
+        map((actions: DocumentChangeAction<Event>[]) => {
+          return actions.map((a: DocumentChangeAction<Event>) => {
+            const data: Object = a.payload.doc.data() as Event;
+            const id = a.payload.doc.id;
+            return { id: id, ...data };
+          });
+        }),
+      );
   }
-
-  optionList = [
-    Event.Answer,
-    Event.Busy,
-    Event.CalledNumber,
-    Event.Disconnected,
-    Event.NoAnswer,
-    Event.NotReachable
-  ]
 
   onNoClick() {
     this.dialogRef.close();

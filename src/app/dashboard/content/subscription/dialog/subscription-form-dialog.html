@@ -5,7 +5,7 @@
   </mat-form-field>
   <div>
     <mat-radio-group [(ngModel)]="data.event" >
-      <mat-radio-button *ngFor="let option of optionList" value="{{option}}" style="margin: 10px">{{option}}</mat-radio-button>
+      <mat-radio-button *ngFor="let option of optionList | async" value="{{option.name}}" style="margin: 10px">{{option.name}}</mat-radio-button>
     </mat-radio-group>
   </div>
 </div>
