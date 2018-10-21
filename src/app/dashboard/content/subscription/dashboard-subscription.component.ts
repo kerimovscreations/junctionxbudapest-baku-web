@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Subscription } from "./interfaces/subscription.interface";
 import { Event } from './enums/event.enum';
-import {DialogData} from '../ads/dashboard-ads.component';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { DialogData } from '../ads/dashboard-ads.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface DialogData {
   number: string;
@@ -35,7 +35,7 @@ export class DashboardSubscriptionComponent implements OnInit {
   onAdd() {
     const dialogRef = this.dialog.open(SubscriptionDialog, {
       width: '550px',
-      data: {number: "", event: Event.Answer}
+      data: { number: "", event: Event.Answer }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -58,7 +58,7 @@ export class SubscriptionDialog {
   }
 
   optionList = [Event.Answer,
-    Event.Busy,
+  Event.Busy,
   Event.CalledNumber,
   Event.Disconnected,
   Event.NoAnswer,
