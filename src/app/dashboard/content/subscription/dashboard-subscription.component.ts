@@ -40,7 +40,7 @@ export class DashboardSubscriptionComponent implements OnInit {
   onAdd() {
     const dialogRef = this.dialog.open(SubscriptionDialog, {
       width: '550px',
-      data: { number: "", event: ""}
+      data: { number: "", event: "" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -52,7 +52,6 @@ export class DashboardSubscriptionComponent implements OnInit {
       }
     });
   }
-
 
   onDelete(item) {
     console.log(item)
