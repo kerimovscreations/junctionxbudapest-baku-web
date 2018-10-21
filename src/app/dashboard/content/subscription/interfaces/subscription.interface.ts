@@ -1,6 +1,7 @@
 import { Event } from '../enums/event.enum';
 
 export interface Subscription {
+    id: String
     event: Event
-    number: String
+    phone: String
 }

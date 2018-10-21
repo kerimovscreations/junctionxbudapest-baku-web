@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -12,6 +12,10 @@ import {
 } from '@angular/material';
 
 import { DashboardModule } from './dashboard/dashboard.module'
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,10 @@ import { DashboardModule } from './dashboard/dashboard.module'
     MatButtonModule,
     MatCheckboxModule,
     DashboardModule,
-    MatToolbarModule
+    MatToolbarModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireStorageModule 
   ],
   providers: [],
   bootstrap: [
